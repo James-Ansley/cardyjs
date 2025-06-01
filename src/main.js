@@ -13,10 +13,7 @@
  * limitations under the License.
  */
 
-/* @ts-self-types="./clique.d.ts" */
-/* @ts-self-types="./distance.d.ts" */
-/* @ts-self-types="./neighbourhood.d.ts" */
-/* @ts-self-types="./orthogonality.d.ts" */
+/* @ts-self-types="./main.d.ts" */
 
 export {distance} from "./distance.js";
 export {neighbourhood} from "./neighbourhood.js";
