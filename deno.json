@@ -1,0 +1,24 @@
+{
+  "name": "@james-ansley/cardy",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "imports": {
+    "@alg/munkres": "jsr:@alg/munkres@0",
+    "@alg/range": "jsr:@alg/range@0"
+  },
+  "lock": false,
+  "exports": {
+    ".": "./src/main.js",
+    "./distance": "./src/distance.js",
+    "./clique": "./src/clique.js",
+    "./neighbourhood": "./src/neighbourhood.js",
+    "./orthogonality": "./src/orthogonality.js"
+  },
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "src/**"
+    ]
+  }
+}
