@@ -3,9 +3,6 @@
 [![JSR](https://jsr.io/badges/@james-ansley/cardy)](https://jsr.io/@james-ansley/cardy)
 [![License](https://img.shields.io/badge/Apache--2.0-green?label=license)](https://github.com/James-Ansley/cardyjs/blob/main/LICENSE)
 
-> [!NOTE]
-> This project is in alpha, significant changes and additions are expected.
-
 Low-level card sorting utilities to compare card sorts — including calculating
 edit distances, d-neighbourhoods, d-cliques, and orthogonality of card sorts.
 
