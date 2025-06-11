@@ -1,7 +1,8 @@
 # @james-ansley/cardy
 
-[![JSR](https://jsr.io/badges/@james-ansley/cardy)](https://jsr.io/@james-ansley/cardy)
+[![Repository](https://img.shields.io/badge/james--ansley%2Fcardyjs-102335?logo=codeberg&labelColor=07121A)](https://codeberg.org/james-ansley/cardyjs)
 [![License](https://img.shields.io/badge/Apache--2.0-green?label=license)](https://codeberg.org/james-ansley/cardyjs/src/branch/main/LICENSE)
+[![JSR](https://jsr.io/badges/@james-ansley/cardy)](https://jsr.io/@james-ansley/cardy)
 
 Low-level card sorting utilities to compare card sorts — including calculating
 edit distances, d-neighbourhoods, d-cliques, and orthogonality of card sorts.
@@ -19,6 +20,31 @@ interested in analysing card sorting data.
 ```
 deno add jsr:@james-ansley/cardy
 ```
+
+<details>
+<summary>Other Install Options</summary>
+
+```bash
+npx jsr add @james-ansley/cardy
+```
+
+```bash
+bunx jsr add @james-ansley/cardy
+```
+
+```bash
+pnpm i jsr:@james-ansley/cardy
+```
+
+```bash
+yarn add jsr:@james-ansley/cardy
+```
+
+```bash
+vlt install jsr:@james-ansley/cardy
+```
+
+</details>
 
 ## Usage
 
