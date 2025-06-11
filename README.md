@@ -73,6 +73,49 @@ if (distance(sort1, sort2) === 0) {
 }
 ```
 
+#### Maximum and Normalised Edit Distances
+
+Normalised edit distances can be computed with the `normDistance` function:
+
+```javascript
+import {normDistance} from "@james-ansley/cardy";
+
+const sort1 = [
+    ["a1", "a2", "a3"],
+    ["b1", "b2", "b3", "b4", "b5"],
+    ["c1", "c2", "c3", "c4", "c5"],
+    ["d1", "d2", "d3", "d4"],
+].map((e) => new Set(e));
+const sort2 = [
+    ["a1", "b1", "b5", "c1", "c5", "d1"],
+    ["a2", "b2", "c2", "d2"],
+    ["a3", "b3", "c3", "d3"],
+    ["b4", "c4", "d4"],
+].map((e) => new Set(e));
+
+console.log(normDistance(sort1, sort2));  // 0.92...
+console.log(normDistance(sort1, sort2, {numGroups: 4}));  // 1
+```
+
+The `numGroups` option specifies the normalised distance should be computed
+under the assumption the maximum number of groups in either card sort will not
+exceed `numGroups`. If this option is not given, distances are normalised with
+no limit on the number of groups.
+
+The maximum edit distance any other card sort can be from a given card sort can
+be computed with the `maxDistance` function.
+
+```javascript
+import {maxDistance} from "@james-ansley/cardy";
+
+// Using sort1 from the previous example
+console.log(maxDistance(sort1));  // 13
+console.log(maxDistance(sort1, {numGroups: 4}));  // 12
+```
+
+As before, the `numGroups` option places a restriction on the maximum number of
+groups another card sort may have.
+
 ### Cliques and Neighbourhoods
 
 Cliques and neighbourhoods can be calculated using the `clique`

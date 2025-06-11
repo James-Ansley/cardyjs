@@ -15,7 +15,7 @@
 
 /* @ts-self-types="./main.d.ts" */
 
-export {distance} from "./distance.js";
+export {distance, normDistance, maxDistance} from "./distance.js";
 export {neighbourhood} from "./neighbourhood.js";
 export {orthogonality} from "./orthogonality.js";
 export {clique} from "./clique.js";

@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-import {assertEquals} from "jsr:@std/assert";
-import {distance} from "../src/distance.js";
+import {assertEquals, assertAlmostEquals} from "jsr:@std/assert";
+import {distance, normDistance} from "../src/distance.js";
+import {maxDistance} from "../src/main.js";
 
 function set(...values) {
     return new Set(values);
@@ -73,5 +74,53 @@ Deno.test({
             [set(1, 2), set(3, 4), set(5, 6, 7), set(8, 9)],
             [set(1, 2, 3), set(4, 5, 6), set(7, 8, 9)],
         ), 3);
+    },
+});
+
+Deno.test({
+    name: "The maximum edit distance is computed for card sorts",
+    fn: () => {
+        const sort1 = [
+            ["a1", "a2", "a3"],
+            ["b1", "b2", "b3", "b4", "b5"],
+            ["c1", "c2", "c3", "c4", "c5"],
+            ["d1", "d2", "d3", "d4"],
+        ].map((e) => new Set(e));
+        assertEquals(maxDistance(sort1), 13);
+        assertEquals(maxDistance(sort1, {numGroups: 4}), 12);
+    },
+});
+
+Deno.test({
+    name: "The normalised edit distance is computed for card sorts",
+    fn: () => {
+        const sort1 = [
+            ["a1", "a2", "a3"],
+            ["b1", "b2", "b3", "b4", "b5"],
+            ["c1", "c2", "c3", "c4", "c5"],
+            ["d1", "d2", "d3", "d4"],
+        ].map((e) => new Set(e));
+        const sort2 = [
+            ["a1", "b1", "b5", "c1", "c5", "d1"],
+            ["a2", "b2", "c2", "d2"],
+            ["a3", "b3", "c3", "d3"],
+            ["b4", "c4", "d4"],
+        ].map((e) => new Set(e));
+        const sort3 = [
+            ["a1", "b1", "c1", "d1"],
+            ["a2", "b2", "c2", "d2"],
+            ["a3", "b3", "c3", "d3"],
+            ["b4", "c4", "d4"],
+            ["b5", "c5"],
+        ].map((e) => new Set(e));
+        const sort4 = [
+            ["a1", "a2"],
+            ["a3", "b1", "b2", "b3", "b4", "b5"],
+            ["c1", "c2", "c3", "c4", "c5"],
+            ["d1", "d2", "d3", "d4"],
+        ].map((e) => new Set(e));
+        assertEquals(normDistance(sort1, sort2, {numGroups: 4}), 1);
+        assertEquals(normDistance(sort1, sort3), 1);
+        assertAlmostEquals(normDistance(sort1, sort4, {numGroups: 4}), 1 / 12);
     },
 });
