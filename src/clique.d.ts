@@ -33,23 +33,30 @@ type Strategy<K, T> = (
  * The strategy is a heuristic used to select candidate card sorts to add to
  * the clique. See <https://doi.org/10.1111/j.1468-0394.2005.00304.x> for more.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * @template K
  * @template T
  * @param {number} d The max distance between any two sorts in the clique
  * @param {Set<T>[]} probe The starting probe sort
- * @param {Map<K, Set<T>[]>} sorts The collection of card sorts to search for the clique in
+ * @param {Map<K, Set<T>[]>} sorts The collection of card sorts to search for
+ * the clique in
  * @param {Object} options
  * @param {Strategy<K, T>} options.strategy The heuristic strategy for
  * selecting candidates to add to the clique.
  * @param {Selector<K>} options.selector An object to resolve collisions in
  * selected candidates in the heuristic function
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  * @returns A d-clique around the probe sort
  */
 export function clique<K, T>(
     d: number,
     probe: Set<T>[],
     sorts: Map<K, Set<T>[]>,
-    options?: { strategy?: Strategy<K, T>; selector: Selector<K> },
+    options?: {
+        strategy?: Strategy<K, T>; selector: Selector<K>,
+        distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number,
+    },
 ): Set<K>;
 
 /**

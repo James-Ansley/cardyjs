@@ -16,6 +16,7 @@
 import {assertEquals} from "jsr:@std/assert";
 import {clique} from "../src/clique.js";
 import examples from "./examples.json" with {type: "json"};
+import {normDistance} from "../src/main.js";
 
 
 function set(...values) {
@@ -44,18 +45,18 @@ class MaxSelector {
     }
 }
 
-//
-//
 Deno.test({
     name: "a clique of equivalent sorts returns the whole set of sort ids",
     fn: () => {
-
+        const sorts = new Map([
+            [0, [set(1), set(2)]],
+            [1, [set(2), set(1)]],
+        ]);
+        assertEquals(clique(0, [set(1), set(2)], sorts), set(0, 1));
+        assertEquals(clique(1, [set(1), set(2)], sorts), set(0, 1));
     },
 });
-//     assert clique(0, (set(1), set(2)), {0: (set(1), set(2)), 1: (set(2), set(1))}) == set(0, 1)
-//     assert clique(1, (set(1), set(2)), {0: (set(1), set(2)), 1: (set(2), set(1))}) == set(0, 1)
-//
-//
+
 Deno.test({
     name: "cliques do not necessarily contain the probe sort",
     fn: () => {
@@ -70,8 +71,7 @@ Deno.test({
     },
 });
 
-//
-//
+
 Deno.test({
     name: "cliques exclude items even if they are in the neighbourhood of the card sort",
     fn: () => {
@@ -92,14 +92,13 @@ Deno.test({
     },
 });
 
-
 // Examples taken from: https://doi.org/10.1111/j.1468-0394.2005.00304.x
 Deno.test({
     name: "example cliques",
     fn: () => {
         const sorts = loadExamples();
-        const minSelector = {selector: new MinSelector()}
-        const maxSelector = {selector: new MaxSelector()}
+        const minSelector = {selector: new MinSelector()};
+        const maxSelector = {selector: new MaxSelector()};
 
         // Table 5 Deibel et al.
         assertEquals(
@@ -132,6 +131,55 @@ Deno.test({
         // Table 8 Deibel et al.
         assertEquals(
             clique(5, sorts.get("table-8-0"), sorts, maxSelector),
+            set(
+                "table-8-0", "table-8-1", "table-8-2", "table-8-3",
+                "table-5-0/8-4", "table-5-9/8-5",
+            ),
+        );
+    },
+});
+
+
+// Examples taken from: https://doi.org/10.1111/j.1468-0394.2005.00304.x
+Deno.test({
+    name: "example cliques with norm distance",
+    fn: () => {
+        const sorts = loadExamples();
+        const dist = {distance: (l, r) => normDistance(l, r, {numGroups: 3})};
+        const minSelector = {selector: new MinSelector(), ...dist};
+        const maxSelector = {selector: new MaxSelector(), ...dist};
+
+        // Table 5 Deibel et al.
+        assertEquals(
+            clique(4 / 17, sorts.get("table-5-0/8-4"), sorts, dist),
+            set(
+                "table-5-0/8-4", "table-5-1", "table-5-2", "table-5-3",
+                "table-5-4", "table-5-5", "table-5-6", "table-5-7",
+                "table-5-8", "table-5-9/8-5",
+            ),
+        );
+
+        // Table 6 Deibel et al.
+        assertEquals(
+            clique(5 / 17, sorts.get("table-6-0"), sorts, minSelector),
+            set(
+                "table-6-0", "table-6-1", "table-6-2", "table-6-3",
+                "table-6-4", "table-6-5", "table-6-6", "table-6-7",
+            ),
+        );
+
+        // Table 7 Deibel et al.
+        assertEquals(
+            clique(5 / 17, sorts.get("table-7-0"), sorts, dist),
+            set(
+                "table-7-0", "table-7-1", "table-7-2",
+                "table-7-3", "table-7-4", "table-7-5",
+            ),
+        );
+
+        // Table 8 Deibel et al.
+        assertEquals(
+            clique(5 / 17, sorts.get("table-8-0"), sorts, maxSelector),
             set(
                 "table-8-0", "table-8-1", "table-8-2", "table-8-3",
                 "table-5-0/8-4", "table-5-9/8-5",

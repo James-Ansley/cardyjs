@@ -16,12 +16,16 @@
 /**
  * Returns the orthogonality of the given collection of sorts.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * See: https://doi.org/10.1111/j.1468-0394.2005.00305.x
  *
  * @template T
  * @param {Set<T>[][]} sorts
+ * @param {Object} options
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  */
 export function orthogonality<T>(
     sorts: Set<T>[][],
+    options?: {distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number}
 ): number;
-

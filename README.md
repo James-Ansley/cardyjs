@@ -144,6 +144,16 @@ console.log("2-neighbourhood around", probe, "is", two_neighbourhood);
 // 2-neighbourhood around [ Set(5) {1, 2, 3, 4, 5} ] is Set(3) { 0, 1, 4 }
 ```
 
+Neighbourhoods can be calculated using normalised edit distances by passing a
+custom edit distance function as an option:
+
+```javascript
+const options = {distance: (l, r) => normDistance(l, r, {numGroups: 3})};
+const passing_neighbourhood = neighbourhood(0.75, probe, sorts, options);
+console.log("Sorts within 75% of", probe, "are", passing_neighbourhood);
+// Sorts within 75% of [ Set(5) { 1, 2, 3, 4, 5 } ] are Set(3) { 0, 1, 4 }
+```
+
 #### Cliques
 
 Cliques can be non-deterministic — even when using a greedy strategy (default):
@@ -205,6 +215,21 @@ console.log("1-clique around", probe, "is", [...oneClique]);
 // 1-clique around [ Set(2) { 1, 2 }, Set(1) { 3 } ] is [ 0, 1 ]
 ```
 
+As with neighbourhoods, a normalised edit distance function can be passed to
+the clique call as an option:
+
+```javascript
+const options = {
+    selector: new MinSelector(),
+    distance: (l, r) => normDistance(l, r, {numGroups: 3}),
+};
+const oneClique = clique(1, probe, sorts, options);
+console.log("100%-clique around", probe, "is", [...oneClique]);
+// 100%-clique around [ Set(2) { 1, 2 }, Set(1) { 3 } ] is [ 1, 0, 2 ]
+// Not an exciting example.
+// But what are ya gonna do? Ya know. Just one of those days.
+```
+
 ### Orthogonality
 
 The orthogonality of a collection of sorts can be calculated with the
@@ -225,6 +250,15 @@ const p1 = [
 const p1Orthogonality = orthogonality(p1);
 console.log("P1 orthogonality:", p1Orthogonality.toFixed(2));
 // P1 orthogonality: 2.33
+```
+
+A custom edit distance function can be passed to the orthogonality calculation:
+
+```javascript
+const options = {distance: (l, r) => normDistance(l, r, {numGroups: 2})};
+const p1Orthogonality = orthogonality(p1, options);
+console.log("P1 normalized orthogonality:", p1Orthogonality.toFixed(2));
+// P1 normalized orthogonality: 0.18
 ```
 
 [^1]: Deibel, K., Anderson, R. and Anderson, R. (2005), Using edit distance to

@@ -25,23 +25,30 @@ import type {Selector, Strategy} from "./clique.d.ts";
  * The strategy is a heuristic used to select candidate card sorts to add to
  * the clique. See <https://doi.org/10.1111/j.1468-0394.2005.00304.x> for more.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * @template K
  * @template T
  * @param {number} d The max distance between any two sorts in the clique
  * @param {Set<T>[]} probe The starting probe sort
- * @param {Map<K, Set<T>[]>} sorts The collection of card sorts to search for the clique in
+ * @param {Map<K, Set<T>[]>} sorts The collection of card sorts to search for
+ * the clique in
  * @param {Object} options
  * @param {Strategy<K, T>} options.strategy The heuristic strategy for
  * selecting candidates to add to the clique.
  * @param {Selector<K>} options.selector An object to resolve collisions in
  * selected candidates in the heuristic function
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  * @returns A d-clique around the probe sort
  */
 export function clique<K, T>(
     d: number,
     probe: Set<T>[],
     sorts: Map<K, Set<T>[]>,
-    options?: { strategy?: Strategy<K, T>; selector: Selector<K> },
+    options?: {
+        strategy?: Strategy<K, T>; selector: Selector<K>,
+        distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number,
+    },
 ): Set<K>;
 
 /**
@@ -97,28 +104,38 @@ export function maxDistance<T>(
  * The probe sort does not need to be one of the given sorts and will not be
  * included in the result if it is not.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * @template K
  * @template T
  * @param {number} d The max distance neighbourhood elements and the probe
  * @param {Set<T>[]} probe The sort at the centre of the neighbourhood
  * @param {Map<K, Set<T>[]>} sorts A collection of sorts in which to search
  * for the neighbourhood
+ * @param {Object} options
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  * @returns {Set<K>} The d-neighbourhood of the given probe
  */
 export function neighbourhood<K, T>(
     d: number,
     probe: Set<T>[],
     sorts: Map<K, Set<T>[]>,
+    options?: {distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number},
 ): Set<K>;
 
 /**
  * Returns the orthogonality of the given collection of sorts.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * See: https://doi.org/10.1111/j.1468-0394.2005.00305.x
  *
  * @template T
  * @param {Set<T>[][]} sorts
+ * @param {Object} options
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  */
 export function orthogonality<T>(
     sorts: Set<T>[][],
+    options?: {distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number}
 ): number;

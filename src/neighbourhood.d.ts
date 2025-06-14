@@ -19,16 +19,21 @@
  * The probe sort does not need to be one of the given sorts and will not be
  * included in the result if it is not.
  *
+ * An alternative edit distance function can be passed in as an option.
+ *
  * @template K
  * @template T
  * @param {number} d The max distance neighbourhood elements and the probe
  * @param {Set<T>[]} probe The sort at the centre of the neighbourhood
  * @param {Map<K, Set<T>[]>} sorts A collection of sorts in which to search
  * for the neighbourhood
+ * @param {Object} options
+ * @param {(sort1: Set<T>[], sort2: Set<T>[]) => number} options.distance
  * @returns {Set<K>} The d-neighbourhood of the given probe
  */
 export function neighbourhood<K, T>(
     d: number,
     probe: Set<T>[],
     sorts: Map<K, Set<T>[]>,
+    options?: {distance?: (sort1: Set<T>[], sort2: Set<T>[]) => number},
 ): Set<K>;

@@ -15,7 +15,7 @@
 
 /* @ts-self-types="./orthogonality.d.ts" */
 
-import {distance} from "./distance.js";
+import {distance as editDistance} from "./distance.js";
 import {range} from "@alg/range";
 
 
@@ -79,7 +79,10 @@ function combinations(values) {
     return result;
 }
 
-export function orthogonality(sorts) {
+export function orthogonality(
+    sorts,
+    {distance = (sort1, sort2) => editDistance(sort1, sort2)} = {},
+) {
     const indices = range(sorts.length);
     const edges = combinations(indices);
     const edgeWeights = Object.fromEntries(

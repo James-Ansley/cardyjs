@@ -20,6 +20,7 @@ import {
 } from "../src/orthogonality.js";
 import {range} from "@alg/range";
 import {assertEquals, assertAlmostEquals} from "jsr:@std/assert";
+import {normDistance} from "../src/main.js";
 
 
 const example1 = [
@@ -106,5 +107,21 @@ Deno.test({
     fn: () => {
         assertAlmostEquals(orthogonality(example1), 7 / 3);  // 2.33...
         assertAlmostEquals(orthogonality(example2), 11.0);
+    },
+});
+
+Deno.test({
+    name: "norm orthogonality",
+    fn: () => {
+        const dist1 = {distance: (l, r) => normDistance(l, r, {numGroups: 2})};
+        assertAlmostEquals(
+            orthogonality(example1, dist1),
+            (7 / 3) / 13,
+        );
+        const dist2 = {distance: (l, r) => normDistance(l, r, {numGroups: 7})};
+        assertAlmostEquals(
+            orthogonality(example2, dist2),
+            11 / 21,
+        );
     },
 });

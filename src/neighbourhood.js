@@ -15,10 +15,15 @@
 
 /* @ts-self-types="./neighbourhood.d.ts" */
 
-import {distance} from "./distance.js";
+import {distance as editDistance} from "./distance.js";
 
 
-export function neighbourhood(d, probe, sorts) {
+export function neighbourhood(
+    d,
+    probe,
+    sorts,
+    {distance = (sort1, sort2) => editDistance(sort1, sort2)} = {},
+) {
     return new Set(sorts
         .entries()
         .filter(([_, sort]) => distance(probe, sort) <= d)

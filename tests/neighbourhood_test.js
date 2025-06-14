@@ -15,6 +15,7 @@
 
 import {assertEquals} from "jsr:@std/assert";
 import {neighbourhood} from "../src/neighbourhood.js";
+import {normDistance} from "../src/main.js";
 
 function set(...values) {
     return new Set(values);
@@ -38,6 +39,19 @@ Deno.test({
 });
 
 Deno.test({
+    name: "zero norm neighbourhoods only include equivalent card sorts",
+    fn: () => {
+        const dist = {distance: (l, r) => normDistance(l, r, {numGroups: 3})};
+        assertEquals(neighbourhood(0, SORTS.get(0), SORTS, dist), set(0, 1));
+        assertEquals(neighbourhood(0, SORTS.get(2), SORTS, dist), set(2));
+        assertEquals(
+            neighbourhood(0, [set(1, 2, 3, 4, 5)], SORTS, dist),
+            set(),
+        );
+    },
+});
+
+Deno.test({
     name: "neighbourhoods are returned when sorts have different distances",
     fn: () => {
         assertEquals(neighbourhood(1, SORTS.get(0), SORTS), set(0, 1, 2));
@@ -48,6 +62,29 @@ Deno.test({
         );
         assertEquals(
             neighbourhood(3, [set(1, 2, 3, 4, 5)], SORTS),
+            set(0, 1, 2, 3, 4),
+        );
+    },
+});
+
+Deno.test({
+    name: "norm neighbourhoods are returned with different distances",
+    fn: () => {
+        const dist = {distance: (l, r) => normDistance(l, r, {numGroups: 3})};
+        assertEquals(
+            neighbourhood(1 / 3, SORTS.get(0), SORTS, dist),
+            set(0, 1, 2)
+        );
+        assertEquals(
+            neighbourhood(2 / 3, SORTS.get(0), SORTS, dist),
+            set(0, 1, 2, 3, 4),
+        );
+        assertEquals(
+            neighbourhood(2 / 3, [set(1, 2, 3, 4, 5)], SORTS, dist),
+            set(0, 1, 4),
+        );
+        assertEquals(
+            neighbourhood(1, [set(1, 2, 3, 4, 5)], SORTS, dist),
             set(0, 1, 2, 3, 4),
         );
     },

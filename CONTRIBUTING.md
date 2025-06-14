@@ -1,7 +1,7 @@
 # Contributing
 
 Issues and pull requests are welcome
-on [Codeberg](https://codeberg.org/james-ansley/cardyjs/).
+on [Codeberg](https://codeberg.org/james-ansley/cardyjs).
 
 If you would like a new feature to be added to this library, please create an
 issue for it first so the community has time to discuss the proposed feature.

@@ -15,7 +15,7 @@
 
 /* @ts-self-types="./clique.d.ts" */
 
-import {distance} from "./distance.js";
+import {distance as editDistance} from "./distance.js";
 import {neighbourhood} from "./neighbourhood.js";
 
 
@@ -32,11 +32,18 @@ export function randomStrategy(_, candidates, selector) {
 }
 
 
-export function greedyStrategy(d, candidates, selector) {
+export function greedyStrategy(
+    d,
+    candidates,
+    selector,
+    {distance = (sort1, sort2) => editDistance(sort1, sort2)} = {},
+    ) {
     let currentMax = 0;
     let maxCandidates = [];
     for (const [key, candidate] of candidates.entries()) {
-        const size = neighbourhood(d, candidate, candidates).size;
+        const size = neighbourhood(
+            d, candidate, candidates, {distance: distance},
+            ).size;
         if (size > currentMax) {
             maxCandidates = [key];
             currentMax = size
@@ -52,7 +59,10 @@ export function clique(
     d,
     probe,
     sorts,
-    {strategy = greedyStrategy, selector = new RandomSelector()} = {}
+    {
+        strategy = greedyStrategy, selector = new RandomSelector(),
+        distance = (sort1, sort2) => editDistance(sort1, sort2),
+    } = {}
 ) {
     const cliqueSet = new Set(
         sorts.entries()
