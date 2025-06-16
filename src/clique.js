@@ -60,7 +60,8 @@ export function clique(
     probe,
     sorts,
     {
-        strategy = greedyStrategy, selector = new RandomSelector(),
+        strategy = greedyStrategy,
+        selector = new RandomSelector(),
         distance = (sort1, sort2) => editDistance(sort1, sort2),
     } = {}
 ) {
@@ -74,7 +75,12 @@ export function clique(
             .filter(([_, s]) => between(distance(probe, s), 0, d)),
     );
     while (candidates.size !== 0) {
-        const selected = strategy(d, candidates, selector);
+        const selected = strategy(
+            d,
+            candidates,
+            selector,
+            {distance: distance},
+        );
         cliqueSet.add(selected);
         candidates = new Map(
             candidates.entries()
